@@ -12,7 +12,8 @@ const loadButton = document.querySelector(".guestbook-load");
 const submitButton = guestbookForm.querySelector('[type="submit"]');
 const entryPrefix = "suanlayu-guestbook:";
 const cloudflareOrigin = "https://suanlayu.suanlayu666.workers.dev";
-const apiOrigin = ["127.0.0.1", "localhost"].includes(location.hostname) ? location.origin : cloudflareOrigin;
+const sameOriginHosts = ["127.0.0.1", "localhost", new URL(cloudflareOrigin).hostname];
+const apiOrigin = sameOriginHosts.includes(location.hostname) ? location.origin : cloudflareOrigin;
 const apiUrl = new URL("/api/guestbook", apiOrigin);
 const entriesById = new Map();
 let nextCursor = null;
@@ -97,11 +98,27 @@ function renderGuestbook() {
   emptyGuestbook.hidden = entries.length > 0;
 }
 
+function createRequestId() {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return [hex.slice(0, 8), hex.slice(8, 12), hex.slice(12, 16), hex.slice(16, 20), hex.slice(20)].join("-");
+}
+
 async function requestGuestbook(url, options) {
-  const response = await fetch(url, { ...options, signal: AbortSignal.timeout(12000) });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || "留言服务暂时不可用。", { cause: response.status });
-  return data;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  try {
+    const response = await fetch(url.href, { ...options, signal: controller.signal });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "留言服务暂时不可用。", { cause: response.status });
+    return data;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function loadEntries() {
@@ -115,9 +132,11 @@ async function loadEntries() {
     renderGuestbook();
     loadButton.textContent = "加载更多";
     loadButton.hidden = nextCursor === null;
-  } catch {
+  } catch (error) {
     if (entriesById.size === 0) {
-      emptyGuestbook.textContent = "暂时无法加载留言，请重试。";
+      emptyGuestbook.textContent = error.name === "AbortError"
+        ? "留言加载超时，请重试。"
+        : "暂时无法加载留言，请重试。";
       emptyGuestbook.hidden = false;
     }
     loadButton.textContent = "重试加载";
@@ -149,7 +168,7 @@ guestbookForm.addEventListener("submit", async (event) => {
 
   const name = guestName.value.trim() || "访客";
   if (submission?.name !== name || submission.message !== message) {
-    submission = { name, message, requestId: crypto.randomUUID() };
+    submission = { name, message, requestId: createRequestId() };
   }
   submitButton.disabled = true;
   guestbookStatus.textContent = "正在发布留言…";
@@ -168,9 +187,13 @@ guestbookForm.addEventListener("submit", async (event) => {
     submission = undefined;
     guestbookStatus.textContent = "留言已发布。";
   } catch (error) {
-    guestbookStatus.textContent = typeof error.cause === "number"
-      ? error.message
-      : "暂时无法确认留言是否发布，请重试。";
+    if (error.name === "AbortError") {
+      guestbookStatus.textContent = "发布请求超时，请重试。";
+    } else {
+      guestbookStatus.textContent = typeof error.cause === "number"
+        ? error.message
+        : "暂时无法确认留言是否发布，请重试。";
+    }
   } finally {
     submitButton.disabled = false;
   }
