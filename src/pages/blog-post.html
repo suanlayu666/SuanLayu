@@ -1,0 +1,16 @@
+    <header class="site-header">
+{{logo}}
+    </header>
+
+    <main class="reading-layout">
+      <a class="blog-return" href="{{root}}blog.html"><span aria-hidden="true">←</span> 返回博客</a>
+      <article class="blog-post">
+        <header>
+          <h1>{{title}}</h1>
+          <p class="blog-post-meta"><time datetime="{{date}}">{{fullDate}}</time></p>
+        </header>
+        <div class="blog-post-body markdown-body">
+{{body}}
+        </div>
+      </article>
+    </main>

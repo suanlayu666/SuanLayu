@@ -1,0 +1,88 @@
+:root {
+  color-scheme: light dark;
+  --paper: #fcfbf9;
+  --ink: #252321;
+  --muted: #625f5a;
+  --line: #d0cbc4;
+  --chip-ink: #a99a8b;
+  --signature-ink: #514944;
+  --nav-accent: #f0ebe4;
+  --nav-shadow: #25232114;
+  --page-gutter: clamp(1.5rem, 5vw, 4rem);
+  --header-inset: clamp(1.25rem, 4vw, 2.75rem);
+  --avatar-size: clamp(3rem, 6vw, 3.5rem);
+
+  font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #201f1e;
+    --ink: #f3f0eb;
+    --muted: #bcb6ad;
+    --line: #80786e;
+    --chip-ink: #96897d;
+    --signature-ink: #d1c3b6;
+    --nav-accent: #39342f;
+    --nav-shadow: #0005;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.site-header {
+  position: absolute;
+  inset: var(--header-inset) var(--page-gutter) auto;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-logo {
+  display: block;
+  border-radius: 0.4rem;
+}
+
+.avatar {
+  --avatar-scale: 1.18;
+  display: block;
+  width: var(--avatar-size);
+  height: auto;
+  transform: scale(var(--avatar-scale));
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .site-logo:hover .avatar {
+    animation: fish-wiggle 680ms ease-in-out;
+  }
+}
+
+@keyframes fish-wiggle {
+  from, to {
+    transform: scale(var(--avatar-scale));
+  }
+  34% {
+    transform: translate(7px, -3px) rotate(-8deg) scale(var(--avatar-scale));
+  }
+  67% {
+    transform: translate(3px, 1px) rotate(5deg) scale(var(--avatar-scale));
+  }
+}
+
+.site-logo:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}

@@ -1,0 +1,383 @@
+.site-nav {
+  position: relative;
+}
+
+.site-nav-list {
+  display: flex;
+  gap: clamp(0.125rem, 0.7vw, 0.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-trigger {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--signature-ink);
+  cursor: pointer;
+}
+
+.nav-trigger:hover,
+.nav-trigger[aria-expanded="true"] {
+  background: var(--nav-accent);
+  color: var(--ink);
+}
+
+.nav-trigger:focus-visible,
+.nav-email-copy:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.nav-trigger svg,
+.nav-email-copy svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-trigger svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.nav-preview {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
+  width: min(15rem, calc(100vw - 2 * var(--page-gutter)));
+  padding-top: 0.5rem;
+}
+
+.nav-card {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: var(--paper);
+  box-shadow: 0 6px 22px var(--nav-shadow);
+}
+
+.nav-card h2 {
+  margin: 0 0 0.3rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.nav-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+
+.nav-email {
+  margin-top: 0.35rem;
+}
+
+.nav-email-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  text-align: start;
+  cursor: pointer;
+}
+
+.nav-email-copy span {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.23em;
+}
+
+.nav-email-copy:hover span {
+  text-decoration-color: currentColor;
+}
+
+.nav-email-copy svg {
+  flex: none;
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.nav-email-buffer {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .avatar {
+    filter: invert(1);
+  }
+}
+
+.profile {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: center;
+  column-gap: clamp(1.5rem, 4.2vw, 3.25rem);
+  align-self: center;
+  justify-self: center;
+  width: min(calc(100% - 2 * var(--page-gutter)), 43rem);
+  padding-block: calc(var(--avatar-size) + var(--header-inset) + 1rem);
+  text-align: end;
+}
+
+.profile-mark {
+  grid-area: 1 / 1 / span 4;
+  display: grid;
+  justify-self: end;
+  justify-items: center;
+  gap: 0.55rem;
+  width: min(100%, 15.5rem);
+  pointer-events: none;
+}
+
+.profile h1,
+.profile-details,
+.profile-tagline,
+.social-links {
+  grid-column: 2;
+}
+
+.signature-mark,
+.chip-mark {
+  display: block;
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.signature-mark {
+  width: 100%;
+  color: var(--signature-ink);
+  stroke-width: 16;
+}
+
+.chip-mark {
+  width: min(46%, 7rem);
+  color: var(--chip-ink);
+  stroke-width: 1.6;
+}
+
+.chip-pin-marker {
+  fill: currentColor;
+  stroke: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .profile-mark {
+    --cycle-duration: 8s;
+    animation: fade-drawing var(--cycle-duration) linear infinite;
+  }
+
+  .profile-mark [pathLength] {
+    stroke-dasharray: 1 1.01;
+    animation: var(--stroke-animation) var(--cycle-duration) linear infinite;
+  }
+
+  .signature-initial {
+    --stroke-animation: draw-signature-initial;
+  }
+
+  .signature-stroke {
+    --stroke-animation: draw-signature-stroke;
+  }
+
+  .chip-outline {
+    --stroke-animation: draw-chip-outline;
+  }
+
+  .chip-traces {
+    --stroke-animation: draw-chip-traces;
+  }
+
+  .chip-pin-marker {
+    animation: reveal-marker var(--cycle-duration) linear infinite;
+  }
+}
+
+/* The signature and chip finish drawing at 3.2s in each 8s cycle. */
+@keyframes draw-signature-initial {
+  from {
+    stroke-dashoffset: 1.005;
+  }
+  8.125%, to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-signature-stroke {
+  from, 8.125% {
+    stroke-dashoffset: 1.005;
+  }
+  40%, to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-chip-outline {
+  from {
+    stroke-dashoffset: 1.005;
+  }
+  14.375%, to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-chip-traces {
+  from, 14.375% {
+    stroke-dashoffset: 1.005;
+  }
+  40%, to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes reveal-marker {
+  from, 36.875% {
+    opacity: 0;
+  }
+  40%, to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-drawing {
+  from, 88% {
+    opacity: 1;
+  }
+  96%, to {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 40rem) {
+  .profile {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: clamp(0.5rem, 3vw, 1.5rem);
+  }
+
+  .profile-mark {
+    grid-row: 1;
+    justify-self: start;
+    width: clamp(5rem, 24vw, 9rem);
+  }
+
+  .chip-mark {
+    width: 54%;
+  }
+
+  .profile-details,
+  .profile-tagline,
+  .social-links {
+    grid-column: 1 / -1;
+  }
+}
+
+.profile h1 {
+  margin: 0;
+  font-family: "Songti SC", "Noto Serif CJK SC", SimSun, serif;
+  font-size: clamp(3.45rem, 8vw, 5.25rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0.055em;
+}
+
+.profile-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 0.35rem 0;
+  margin: 1.35rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.875rem, 2.1vw, 1rem);
+  line-height: 1.75;
+}
+
+.profile-details span {
+  white-space: nowrap;
+}
+
+.profile-details span + span::before {
+  margin-inline: 0.45em;
+  content: "·";
+}
+
+@media (max-width: 23rem) {
+  .profile-details {
+    font-size: 0.8125rem;
+  }
+
+  .profile-details span + span::before {
+    margin-inline: 0.35em;
+  }
+}
+
+.profile-tagline {
+  margin: 0.55rem 0 0;
+  font-size: clamp(0.9rem, 2.25vw, 1.0625rem);
+  line-height: 1.65;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 1.45rem;
+  align-items: center;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9375rem;
+}
+
+.social-links a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  gap: 0.42em;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.social-icon {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.social-label {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.25em;
+}
+
+.social-links a:hover .social-label {
+  text-decoration-color: currentColor;
+}
+
+.social-links a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}

@@ -1,0 +1,53 @@
+    <header class="site-header">
+{{logo}}
+    </header>
+
+    <main class="reading-layout">
+      <div class="guestbook-heading">
+        <h1>留言板</h1>
+        <button class="guestbook-write" type="button" aria-expanded="false" aria-controls="guestbook-form" hidden>
+          <span class="guestbook-write-label">写留言</span>
+          <span class="guestbook-write-mark" aria-hidden="true">+</span>
+        </button>
+      </div>
+
+      <form class="guestbook-form" id="guestbook-form" method="post" hidden>
+        <div class="guestbook-field guestbook-nickname">
+          <label for="guest-name">昵称 <span>（选填）</span></label>
+          <input id="guest-name" name="nickname" autocomplete="nickname" placeholder="留个名字">
+        </div>
+        <div class="guestbook-field">
+          <label for="guest-message">留言</label>
+          <textarea id="guest-message" name="message" rows="5" placeholder="写下你想说的话" required></textarea>
+        </div>
+        <div class="guestbook-actions">
+          <p>留言保存在当前浏览器。</p>
+          <button type="submit">发布留言</button>
+        </div>
+      </form>
+      <p class="guestbook-status" role="status"></p>
+
+      <section class="guestbook-feed" aria-label="留言列表">
+        <p class="guestbook-empty">还没有留言，欢迎留下第一条。</p>
+        <div class="guestbook-groups"></div>
+      </section>
+
+      <template id="guestbook-year-template">
+        <section class="archive-group guestbook-archive">
+          <h2 class="archive-year"></h2>
+          <ol class="guestbook-entries" role="list"></ol>
+        </section>
+      </template>
+
+      <template id="guestbook-entry-template">
+        <li class="guestbook-entry">
+          <article>
+            <header>
+              <h3></h3>
+              <time></time>
+            </header>
+            <p></p>
+          </article>
+        </li>
+      </template>
+    </main>

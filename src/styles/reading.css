@@ -1,0 +1,80 @@
+.reading-page {
+  --ripple-ink: #c4b6a53b;
+  --archive-year-ink: #dcd3c8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .reading-page {
+    --ripple-ink: #a99a8b33;
+    --archive-year-ink: #4b433a;
+  }
+}
+
+.reading-page::before,
+.reading-page::after {
+  position: absolute;
+  width: min(38vw, 28rem);
+  height: min(52vw, 28rem);
+  background: repeating-radial-gradient(
+    ellipse at left center,
+    transparent 0 1.7rem,
+    var(--ripple-ink) 1.72rem 1.77rem,
+    transparent 1.79rem 2.45rem
+  );
+  mask-image: radial-gradient(ellipse at left center, #000 15%, transparent 73%);
+  pointer-events: none;
+  content: "";
+}
+
+.reading-page::before {
+  top: min(12vh, 7rem);
+  left: 0;
+}
+
+.reading-page::after {
+  right: 0;
+  bottom: 0;
+  transform: scaleX(-1);
+}
+
+.reading-layout {
+  position: relative;
+  width: min(calc(100% - 2 * var(--page-gutter)), 42rem);
+  margin-inline: auto;
+  padding-block: calc(var(--header-inset) + var(--avatar-size) + clamp(2rem, 5vw, 4.25rem)) 4rem;
+}
+
+.reading-layout h1 {
+  margin: 0;
+  font-family: "Songti SC", "Noto Serif CJK SC", SimSun, serif;
+  font-size: clamp(2.3rem, 5vw, 3.7rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.archive-group {
+  position: relative;
+  isolation: isolate;
+  margin-top: clamp(1.8rem, 5vw, 3.25rem);
+  padding-top: clamp(2.6rem, 6vw, 4.2rem);
+}
+
+.archive-year {
+  position: absolute;
+  z-index: -1;
+  inset: 0 auto auto -0.04em;
+  margin: 0;
+  color: var(--archive-year-ink);
+  font-size: clamp(4.15rem, 10vw, 7.2rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  pointer-events: none;
+}
+
+@supports (-webkit-text-stroke: 1px currentColor) {
+  .archive-year {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--archive-year-ink);
+  }
+}

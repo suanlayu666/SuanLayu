@@ -1,0 +1,170 @@
+.guestbook-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.guestbook-write {
+  min-height: 2.75rem;
+  padding: 0.375rem 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.guestbook-write:hover {
+  color: var(--ink);
+}
+
+.guestbook-write-mark {
+  display: inline-block;
+  margin-inline-start: 0.2rem;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.guestbook-write[aria-expanded="true"] .guestbook-write-mark {
+  transform: rotate(45deg);
+}
+
+.guestbook-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(1.65rem, 4.5vw, 2.6rem);
+}
+
+.guestbook-form[hidden] {
+  display: none;
+}
+
+.guestbook-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.guestbook-nickname {
+  max-width: 17rem;
+}
+
+.guestbook-field label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.guestbook-field label span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.guestbook-field input,
+.guestbook-field textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.66rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.45;
+}
+
+.guestbook-field textarea {
+  resize: vertical;
+}
+
+.guestbook-field input:focus-visible,
+.guestbook-field textarea:focus-visible,
+.guestbook-write:focus-visible,
+.guestbook-actions button:focus-visible {
+  outline: 2px solid var(--signature-ink);
+  outline-offset: 2px;
+}
+
+.guestbook-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 0.85rem;
+}
+
+.guestbook-actions p,
+.guestbook-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.guestbook-actions button {
+  min-height: 2.75rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--ink);
+  border-radius: 0.45rem;
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.guestbook-actions button:hover {
+  background: var(--signature-ink);
+}
+
+.guestbook-status:not(:empty) {
+  margin-top: 0.75rem;
+}
+
+.guestbook-archive {
+  padding-top: clamp(3.25rem, 7vw, 5rem);
+}
+
+.guestbook-empty {
+  margin: clamp(2.3rem, 6vw, 4rem) 0 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.guestbook-entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guestbook-entry {
+  padding-block: 0.7rem;
+  overflow-wrap: anywhere;
+}
+
+.guestbook-entry header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.65rem 1rem;
+}
+
+.guestbook-entry h3 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.guestbook-entry time {
+  flex: none;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.guestbook-entry p {
+  margin: 0.45rem 0 0;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

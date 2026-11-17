@@ -1,0 +1,151 @@
+    <header class="site-header">
+{{logo}}
+      <nav class="site-nav" aria-label="网站栏目">
+        <ul class="site-nav-list">
+          <li class="nav-item">
+            <a class="nav-trigger" href="{{root}}blog.html" aria-label="博客" aria-describedby="nav-blog-description">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="m4 20 2-9 4-3 2-4 8 8-4 2-3 4-9 2Zm0 0 7-7" />
+                <circle cx="12" cy="12" r="1.35" />
+              </svg>
+            </a>
+            <div class="nav-preview" id="nav-blog" hidden>
+              <div class="nav-card">
+                <h2>博客</h2>
+                <p id="nav-blog-description">随手记录一下生活</p>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-trigger" href="{{root}}learn.html" aria-label="学习" aria-describedby="nav-study-description">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 6C9.5 4.2 6.6 4 3 4.5v14c3.4-.5 6.3 0 9 2 2.7-2 5.6-2.5 9-2v-14C17.4 4 14.5 4.2 12 6Zm0 0v14.5" />
+              </svg>
+            </a>
+            <div class="nav-preview" id="nav-study" hidden>
+              <div class="nav-card">
+                <h2>学习</h2>
+                <p id="nav-study-description">从这里开始，走向新时代</p>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-trigger" href="{{root}}guestbook.html" aria-label="留言" aria-describedby="nav-messages-description">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M6 4h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-6l-5 3v-3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3Z" />
+                <path d="M7.5 9h9m-9 4h6" />
+              </svg>
+            </a>
+            <div class="nav-preview" id="nav-messages" hidden>
+              <div class="nav-card">
+                <h2>留言</h2>
+                <p id="nav-messages-description">打个招呼，聊聊学习，或给网站提个建议。</p>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <button class="nav-trigger" type="button" aria-label="与我联系" aria-controls="nav-contact"
+              aria-expanded="false" aria-describedby="nav-contact-description">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                <path d="m4 7 8 6 8-6" />
+              </svg>
+            </button>
+            <div class="nav-preview" id="nav-contact" hidden>
+              <div class="nav-card">
+                <h2>与我联系</h2>
+                <p id="nav-contact-description">交流想法、项目与合作，或是简单的Coffee Chat</p>
+                <div class="nav-email">
+                  <button class="nav-email-copy" type="button">
+                    <span>复制邮箱</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <rect x="8" y="8" width="12" height="12" rx="2" />
+                      <path d="M16 4H6a2 2 0 0 0-2 2v10" />
+                    </svg>
+                  </button>
+                  <p class="nav-email-status" role="status"></p>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="profile">
+      <div class="profile-mark" aria-hidden="true">
+        <svg class="signature-mark" viewBox="126 205 1520 490" focusable="false">
+          <path class="signature-initial" pathLength="1" d="
+            M 444 345 C 476 321 472 293 431 294
+            C 377 290 283 326 235 365 C 197 399 252 416 318 431
+            C 381 446 429 464 398 506 C 370 544 281 578 216 594
+            C 171 606 147 597 157 574 C 168 550 206 524 245 506" />
+          <path class="signature-stroke" pathLength="1" d="
+            M 398 506 C 430 491 459 469 478 451
+            C 464 474 439 516 456 524 C 476 534 520 489 546 456
+            C 531 484 528 509 546 512 C 572 517 607 477 630 459
+            C 653 441 673 439 686 451 C 673 438 648 442 624 464
+            C 606 480 580 514 600 521 C 623 530 677 476 686 451
+            C 677 477 667 502 685 508 C 705 517 752 474 776 449
+            C 767 470 754 494 747 513 C 774 481 802 455 817 453
+            C 839 450 817 499 842 501 C 886 503 928 453 948 425
+            C 999 353 1095 252 1070 240 C 1049 224 990 303 970 361
+            C 945 433 924 481 897 522 C 870 560 828 589 823 570
+            C 820 550 860 529 912 525 C 963 519 1000 538 1040 513
+            C 1073 492 1108 444 1140 444 C 1154 444 1160 448 1158 456
+            C 1143 480 1105 522 1081 516 C 1059 510 1083 473 1114 454
+            C 1130 443 1148 439 1160 452 C 1148 481 1147 501 1169 506
+            C 1195 510 1232 474 1253 449 C 1238 470 1222 511 1240 511
+            C 1265 517 1306 475 1332 449 C 1324 496 1307 538 1284 579
+            C 1255 630 1197 676 1171 661 C 1147 646 1197 598 1236 567
+            C 1280 531 1358 491 1412 449 C 1399 473 1379 508 1399 511
+            C 1427 516 1458 477 1478 452 C 1465 482 1462 506 1490 508
+            C 1533 511 1592 476 1625 435" />
+        </svg>
+        <svg class="chip-mark" viewBox="0 0 96 96" focusable="false">
+          <rect class="chip-outline" pathLength="1" x="22" y="20" width="51" height="51" rx="5" />
+          <g class="chip-traces">
+            <path pathLength="1" d="M35 20 V9" />
+            <path pathLength="1" d="M47.5 20 V9" />
+            <path pathLength="1" d="M60 20 V9" />
+            <path pathLength="1" d="M73 33 H84" />
+            <path pathLength="1" d="M73 45.5 H84" />
+            <path pathLength="1" d="M73 58 H91 V69" />
+            <path pathLength="1" d="M35 71 V82" />
+            <path pathLength="1" d="M47.5 71 V82" />
+            <path pathLength="1" d="M60 71 V89 H73" />
+            <path pathLength="1" d="M22 33 H11" />
+            <path pathLength="1" d="M22 45.5 H11" />
+            <path pathLength="1" d="M22 58 H11" />
+          </g>
+          <circle class="chip-pin-marker" cx="31" cy="29" r="2.3" />
+        </svg>
+      </div>
+      <h1>酸辣鱼</h1>
+      <p class="profile-details">
+        <span>中南民族大学 SCMU</span>
+        <span>电子信息工程</span>
+        <span>武汉</span>
+      </p>
+      <p class="profile-tagline">在AI与电子信息的道路上探索</p>
+      <ul class="social-links" aria-label="社交账号">
+        <li>
+          <a href="https://github.com/suanlayu666">
+            <!-- GitHub mark from Primer Octicons -->
+            <svg class="social-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/>
+            </svg>
+            <span class="social-label">GitHub <span aria-hidden="true">↗</span></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://v.douyin.com/pY-mAA01ElI/">
+            <!-- Music-note mark from Simple Icons -->
+            <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+            </svg>
+            <span class="social-label">抖音 <span aria-hidden="true">↗</span></span>
+          </a>
+        </li>
+      </ul>
+    </main>

@@ -1,0 +1,16 @@
+{
+  "name": "suanlayu-site",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "dev": "node scripts/dev.mjs"
+  },
+  "devDependencies": {
+    "markdown-it": "^15.0.3",
+    "yaml": "^2.9.0"
+  }
+}

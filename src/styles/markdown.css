@@ -1,0 +1,50 @@
+.markdown-body {
+  max-width: 38rem;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.markdown-body p {
+  margin: 0 0 1em;
+}
+
+.markdown-body a {
+  color: var(--ink);
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown-body pre {
+  overflow: auto;
+  padding: 0.85rem 1rem;
+  border-radius: 0.4rem;
+  background: var(--nav-accent);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.markdown-body blockquote {
+  margin-inline: 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 2px solid var(--line);
+  color: var(--muted);
+}
+
+.markdown-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--line);
+}
