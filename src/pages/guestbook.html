@@ -14,23 +14,32 @@
       <form class="guestbook-form" id="guestbook-form" method="post" hidden>
         <div class="guestbook-field guestbook-nickname">
           <label for="guest-name">昵称 <span>（选填）</span></label>
-          <input id="guest-name" name="nickname" autocomplete="nickname" placeholder="留个名字">
+          <input id="guest-name" name="nickname" autocomplete="nickname" placeholder="留个名字" maxlength="32">
         </div>
         <div class="guestbook-field">
           <label for="guest-message">留言</label>
-          <textarea id="guest-message" name="message" rows="5" placeholder="写下你想说的话" required></textarea>
+          <textarea id="guest-message" name="message" rows="5" placeholder="写下你想说的话" maxlength="1000" required></textarea>
         </div>
         <div class="guestbook-actions">
-          <p>留言保存在当前浏览器。</p>
+          <p>发布后的留言会公开显示。</p>
           <button type="submit">发布留言</button>
         </div>
       </form>
       <p class="guestbook-status" role="status"></p>
 
       <section class="guestbook-feed" aria-label="留言列表">
-        <p class="guestbook-empty">还没有留言，欢迎留下第一条。</p>
+        <p class="guestbook-empty" role="status">正在加载留言…</p>
         <div class="guestbook-groups"></div>
+        <button class="guestbook-write guestbook-load" type="button" hidden>加载更多</button>
       </section>
+
+      <details class="guestbook-local" hidden>
+        <summary>以前保存在此浏览器的留言</summary>
+        <p>可以复制原来的内容，再通过上方的「写留言」重新发布。</p>
+        <div class="guestbook-field">
+          <textarea aria-label="以前保存在此浏览器的留言" rows="5" readonly></textarea>
+        </div>
+      </details>
 
       <template id="guestbook-year-template">
         <section class="archive-group guestbook-archive">

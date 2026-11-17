@@ -1,6 +1,9 @@
 import { createReadStream, readFileSync, realpathSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, resolve } from "node:path";
+import { DatabaseSync } from "node:sqlite";
+import { Readable } from "node:stream";
+import { createGuestbookStore, guestbookPath, guestbookSchema, handleGuestbook } from "../server/guestbook.mjs";
 import { watchSite } from "./build.mjs";
 import { mediaTypes, projectRoot, withinDirectory } from "./site-files.mjs";
 
@@ -9,6 +12,10 @@ const host = "127.0.0.1";
 const port = Number(process.env.SUANLAYU_PORT || 4173);
 const clients = new Set();
 let revision = Date.now();
+
+const database = new DatabaseSync(":memory:");
+database.exec(guestbookSchema);
+const guestbookStore = createGuestbookStore((sql, parameters) => database.prepare(sql).all(...parameters));
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -52,19 +59,38 @@ function livePage(path) {
   return readFileSync(path, "utf8").replace("</body>", `${refresh}\n</body>`);
 }
 
+async function serveGuestbook(request, response, url) {
+  try {
+    const body = request.method === "POST" ? { body: Readable.toWeb(request), duplex: "half" } : {};
+    const result = await handleGuestbook(new Request(url, {
+      method: request.method,
+      headers: request.headers,
+      ...body,
+    }), guestbookStore);
+    response.writeHead(result.status, Object.fromEntries(result.headers));
+    response.end(result.body ? await result.text() : undefined);
+  } catch (error) {
+    console.error(error.message);
+    response.writeHead(500).end();
+  }
+}
+
 const server = createServer((request, response) => {
+  let url;
+  try {
+    url = new URL(request.url, `http://${host}:${port}`);
+  } catch {
+    response.writeHead(400).end();
+    return;
+  }
+  const { pathname } = url;
+  if (pathname === guestbookPath) return serveGuestbook(request, response, url);
+
   if (request.method !== "GET" && request.method !== "HEAD") {
     response.writeHead(405, { Allow: "GET, HEAD" }).end();
     return;
   }
 
-  let pathname;
-  try {
-    pathname = new URL(request.url, `http://${host}:${port}`).pathname;
-  } catch {
-    response.writeHead(400).end();
-    return;
-  }
   if (pathname === "/__preview-events" && request.method === "GET") {
     watchBrowser(response);
     return;

@@ -168,3 +168,17 @@
   line-height: 1.7;
   white-space: pre-wrap;
 }
+
+.guestbook-load {
+  margin-top: 1rem;
+}
+
+.guestbook-local {
+  margin-top: 2.5rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.guestbook-local summary {
+  cursor: pointer;
+}

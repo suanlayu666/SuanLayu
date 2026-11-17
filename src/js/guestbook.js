@@ -8,7 +8,15 @@ const emptyGuestbook = document.querySelector(".guestbook-empty");
 const guestbookStatus = document.querySelector(".guestbook-status");
 const yearTemplate = document.querySelector("#guestbook-year-template");
 const entryTemplate = document.querySelector("#guestbook-entry-template");
+const loadButton = document.querySelector(".guestbook-load");
+const submitButton = guestbookForm.querySelector('[type="submit"]');
 const entryPrefix = "suanlayu-guestbook:";
+const cloudflareOrigin = "https://suanlayu.suanlayu666.workers.dev";
+const apiOrigin = ["127.0.0.1", "localhost"].includes(location.hostname) ? location.origin : cloudflareOrigin;
+const apiUrl = new URL("/api/guestbook", apiOrigin);
+const entriesById = new Map();
+let nextCursor = null;
+let submission;
 const guestbookYear = new Intl.DateTimeFormat("en", {
   year: "numeric",
   timeZone: "Asia/Shanghai",
@@ -40,17 +48,26 @@ function readEntry(key) {
   return null;
 }
 
-function renderGuestbook() {
-  let entries;
+function showLocalEntries() {
+  let entries = [];
   try {
     entries = Object.keys(localStorage)
       .filter((key) => key.startsWith(entryPrefix))
       .map(readEntry)
       .filter(Boolean)
       .sort((left, right) => right.createdAt - left.createdAt);
-  } catch {
-    entries = [];
-  }
+  } catch { return; }
+  if (entries.length === 0) return;
+
+  const localEntries = document.querySelector(".guestbook-local");
+  localEntries.querySelector("textarea").value = entries.map(({ name, message, createdAt }) => (
+    `${name} · ${guestbookYear.format(createdAt)} 年 ${guestbookDate.format(createdAt)}\n${message}`
+  )).join("\n\n");
+  localEntries.hidden = false;
+}
+
+function renderGuestbook() {
+  const entries = [...entriesById.values()].sort((left, right) => right.id - left.id);
 
   const archive = document.createDocumentFragment();
   const lists = new Map();
@@ -76,10 +93,42 @@ function renderGuestbook() {
   }
 
   yearGroups.replaceChildren(archive);
+  emptyGuestbook.textContent = "还没有留言，欢迎留下第一条。";
   emptyGuestbook.hidden = entries.length > 0;
 }
 
+async function requestGuestbook(url, options) {
+  const response = await fetch(url, { ...options, signal: AbortSignal.timeout(12000) });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "留言服务暂时不可用。", { cause: response.status });
+  return data;
+}
+
+async function loadEntries() {
+  loadButton.disabled = true;
+  const url = new URL(apiUrl);
+  if (nextCursor !== null) url.searchParams.set("before", nextCursor);
+  try {
+    const page = await requestGuestbook(url);
+    for (const entry of page.entries) entriesById.set(entry.id, entry);
+    nextCursor = page.nextCursor;
+    renderGuestbook();
+    loadButton.textContent = "加载更多";
+    loadButton.hidden = nextCursor === null;
+  } catch {
+    if (entriesById.size === 0) {
+      emptyGuestbook.textContent = "暂时无法加载留言，请重试。";
+      emptyGuestbook.hidden = false;
+    }
+    loadButton.textContent = "重试加载";
+    loadButton.hidden = false;
+  } finally {
+    loadButton.disabled = false;
+  }
+}
+
 writeButton.addEventListener("click", () => setComposerOpen(guestbookForm.hidden));
+loadButton.addEventListener("click", loadEntries);
 guestbookForm.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !event.isComposing && !event.defaultPrevented) {
     setComposerOpen(false);
@@ -87,8 +136,9 @@ guestbookForm.addEventListener("keydown", (event) => {
 });
 guestMessage.addEventListener("input", () => guestMessage.setCustomValidity(""));
 
-guestbookForm.addEventListener("submit", (event) => {
+guestbookForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (submitButton.disabled) return;
   guestbookStatus.textContent = "";
   const message = guestMessage.value.trim();
   if (!message) {
@@ -97,28 +147,35 @@ guestbookForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const entry = {
-    name: guestName.value.trim() || "访客",
-    message,
-    createdAt: Date.now(),
-  };
-  const id = crypto.randomUUID?.() ?? `${entry.createdAt}-${Math.random().toString(36).slice(2)}`;
-  try {
-    localStorage.setItem(`${entryPrefix}${id}`, JSON.stringify(entry));
-  } catch {
-    guestbookStatus.textContent = "当前浏览器无法保存留言。";
-    return;
+  const name = guestName.value.trim() || "访客";
+  if (submission?.name !== name || submission.message !== message) {
+    submission = { name, message, requestId: crypto.randomUUID() };
   }
-
-  guestbookForm.reset();
-  renderGuestbook();
-  setComposerOpen(false);
-  guestbookStatus.textContent = "留言已保存。";
+  submitButton.disabled = true;
+  guestbookStatus.textContent = "正在发布留言…";
+  try {
+    const { entry } = await requestGuestbook(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(submission),
+    });
+    entriesById.set(entry.id, entry);
+    renderGuestbook();
+    if ((guestName.value.trim() || "访客") === name && guestMessage.value.trim() === message) {
+      guestbookForm.reset();
+      setComposerOpen(false);
+    }
+    submission = undefined;
+    guestbookStatus.textContent = "留言已发布。";
+  } catch (error) {
+    guestbookStatus.textContent = typeof error.cause === "number"
+      ? error.message
+      : "暂时无法确认留言是否发布，请重试。";
+  } finally {
+    submitButton.disabled = false;
+  }
 });
 
-window.addEventListener("storage", (event) => {
-  if (event.key === null || event.key.startsWith(entryPrefix)) renderGuestbook();
-});
-
-renderGuestbook();
+showLocalEntries();
 writeButton.hidden = false;
+loadEntries();

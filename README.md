@@ -1,6 +1,6 @@
 # 酸辣鱼个人站
 
-个人主页、博客、学习教程和留言板。网站使用 HTML、CSS 和 JavaScript，博客和教程从 Markdown 生成。Node.js 负责本地预览和构建，部署时由静态托管服务提供 `dist/` 中的文件。留言保存在当前浏览器的 `localStorage`。
+个人主页、博客、学习教程和留言板。网站使用 HTML、CSS 和 JavaScript，博客和教程从 Markdown 生成。Node.js 负责本地预览和构建，部署时由静态托管服务提供 `dist/` 中的文件。公开留言通过 Cloudflare Worker 写入共享数据库。
 
 ## 目录结构
 
@@ -31,7 +31,7 @@
 
 ## 本地预览
 
-需要 Node.js 22 或更新版本。在项目根目录首次运行时安装依赖，再启动预览。
+本地预览需要 Node.js 22.13 或更新版本。在项目根目录首次运行时安装依赖，再启动预览。
 
 ```sh
 npm ci
@@ -83,4 +83,8 @@ date: 2026-11-16
 npm run build
 ```
 
-构建会生成 `dist/index.html`、`dist/blog.html`、`dist/learn.html`、`dist/guestbook.html`，以及 `dist/posts/` 下的博客正文和 `dist/learn/` 下的教程。部署时将 `dist/` 设为发布目录。更新内容后，重新构建并发布同一目录。
+构建会生成 `dist/index.html`、`dist/blog.html`、`dist/learn.html`、`dist/guestbook.html`，以及 `dist/posts/` 下的博客正文和 `dist/learn/` 下的教程。腾讯云 EdgeOne 的发布目录是 `dist/`。Cloudflare Workers 使用 `wrangler.jsonc`，将 `dist/` 和留言 API 一起部署。
+
+留言板通过 `/api/guestbook` 读取和发布留言，数据保存在 Cloudflare Durable Object 的 SQLite 存储中。Cloudflare 和腾讯云网址使用同一份留言。以后如果换腾讯云预览域名或绑定自有域名，把域名的 HTTPS 来源追加到 `wrangler.jsonc` 中的 `GUESTBOOK_ORIGINS`，用逗号分隔。
+
+`npm run dev` 使用临时的本地留言数据库，服务重启后清空。旧版保存在浏览器里的留言可从留言页底部复制，确认内容后重新发布。
