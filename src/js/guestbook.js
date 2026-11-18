@@ -12,7 +12,7 @@ const loadButton = document.querySelector(".guestbook-load");
 const submitButton = guestbookForm.querySelector('[type="submit"]');
 const entryPrefix = "suanlayu-guestbook:";
 const cloudflareOrigin = "https://suanlayu.suanlayu666.workers.dev";
-const sameOriginHosts = ["127.0.0.1", "localhost", new URL(cloudflareOrigin).hostname];
+const sameOriginHosts = ["127.0.0.1", "localhost", "suanlayu.cn", new URL(cloudflareOrigin).hostname];
 const apiOrigin = sameOriginHosts.includes(location.hostname) ? location.origin : cloudflareOrigin;
 const apiUrl = new URL("/api/guestbook", apiOrigin);
 const entriesById = new Map();

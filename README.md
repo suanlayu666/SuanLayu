@@ -85,6 +85,6 @@ npm run build
 
 构建会生成 `dist/index.html`、`dist/blog.html`、`dist/learn.html`、`dist/guestbook.html`，以及 `dist/posts/` 下的博客正文和 `dist/learn/` 下的教程。腾讯云 EdgeOne 的发布目录是 `dist/`。Cloudflare Workers 使用 `wrangler.jsonc`，将 `dist/` 和留言 API 一起部署。
 
-留言板通过 `/api/guestbook` 读取和发布留言，数据保存在 Cloudflare Durable Object 的 SQLite 存储中。Cloudflare 和腾讯云网址使用同一份留言。以后如果换腾讯云预览域名或绑定自有域名，把域名的 HTTPS 来源追加到 `wrangler.jsonc` 中的 `GUESTBOOK_ORIGINS`，用逗号分隔。
+留言板通过 `/api/guestbook` 读取和发布留言，数据保存在 Cloudflare Durable Object 的 SQLite 存储中。`suanlayu.cn` 和 `workers.dev` 网址使用各自域名下的 API，腾讯云网址跨域请求同一个 Worker。绑定新域名到 Worker 时，把主机名加到 `src/js/guestbook.js` 的 `sameOriginHosts`。腾讯云新增或更换访问域名时，把对应的 HTTPS 来源追加到 `wrangler.jsonc` 的 `GUESTBOOK_ORIGINS`，用逗号分隔。
 
 `npm run dev` 使用临时的本地留言数据库，服务重启后清空。旧版保存在浏览器里的留言可从留言页底部复制，确认内容后重新发布。
